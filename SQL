@@ -1,0 +1,155 @@
+-- =============================================================================
+-- Database Creation
+-- =============================================================================
+CREATE DATABASE IF NOT EXISTS `portfolio_db` 
+CHARACTER SET utf8mb4 
+COLLATE utf8mb4_unicode_ci;
+
+USE `portfolio_db`;
+
+-- =============================================================================
+-- 1. Table: profile (User Profile, Bio, Stats & CV Path)
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS `profile` (
+    `id` INT PRIMARY KEY DEFAULT 1,
+    `name` VARCHAR(150) NOT NULL,
+    `tagline` VARCHAR(255) DEFAULT '',
+    `hero_title` VARCHAR(255) DEFAULT '',
+    `bio` TEXT,
+    `about_text` TEXT,
+    `status_text` VARCHAR(150) DEFAULT 'Available for Projects',
+    `location` VARCHAR(150) DEFAULT 'Kathmandu, Nepal',
+    `email` VARCHAR(150) DEFAULT 'wagleom@gmail.com',
+    `resume_url` VARCHAR(255) DEFAULT '',
+    `years_exp` INT DEFAULT 2,
+    `articles_written` INT DEFAULT 1000,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =============================================================================
+-- 2. Table: projects (Projects CRUD with Image Path)
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS `projects` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `title` VARCHAR(255) NOT NULL,
+    `description` TEXT NOT NULL,
+    `tech_stack` VARCHAR(255) DEFAULT '',
+    `project_url` VARCHAR(255) DEFAULT '#',
+    `image_path` VARCHAR(255) DEFAULT 'assets/finance.jpg',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =============================================================================
+-- 3. Table: experience (Work Experience Timeline)
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS `experience` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `role_title` VARCHAR(255) NOT NULL,
+    `company` VARCHAR(255) NOT NULL,
+    `employment_type` VARCHAR(100) DEFAULT 'Full-time',
+    `timeline` VARCHAR(100) NOT NULL,
+    `location` VARCHAR(150) DEFAULT 'Remote',
+    `skills_used` VARCHAR(255) DEFAULT '',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =============================================================================
+-- 4. Table: education (Education & Degrees)
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS `education` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `degree` VARCHAR(255) NOT NULL,
+    `institution` VARCHAR(255) NOT NULL,
+    `gpa` VARCHAR(50) NOT NULL,
+    `timeline` VARCHAR(100) NOT NULL,
+    `skills_covered` VARCHAR(255) DEFAULT '',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =============================================================================
+-- 5. Table: certificates (Licenses & Certifications)
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS `certificates` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `title` VARCHAR(255) NOT NULL,
+    `issuer` VARCHAR(255) NOT NULL,
+    `issue_date` VARCHAR(100) NOT NULL,
+    `credential_url` VARCHAR(255) DEFAULT '#',
+    `skills_covered` VARCHAR(255) DEFAULT '',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =============================================================================
+-- 6. Table: contact_messages (Contact Form Leads)
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS `contact_messages` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(150) NOT NULL,
+    `email` VARCHAR(150) NOT NULL,
+    `subject` VARCHAR(255) NOT NULL,
+    `message` TEXT NOT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- =============================================================================
+-- INITIAL SEED DATA
+-- =============================================================================
+
+-- 1. Insert Profile Default Record
+INSERT INTO `profile` (`id`, `name`, `tagline`, `hero_title`, `bio`, `about_text`, `status_text`, `location`, `email`, `resume_url`, `years_exp`, `articles_written`)
+VALUES (
+    1,
+    'Balananda',
+    'SEO Strategist · Frontend Engineer · Growth Hacker',
+    'Scaling Organic Reach & Engineering Modern Web Products',
+    'Data-backed SEO specialist, frontend developer, and content strategist driving real search traffic, conversion growth, and modern web applications.',
+    'From conducting deep keyword discovery and on-page optimization to technical indexing and social ad campaigns, I merge analytical precision with persuasive storytelling to deliver compound organic growth.',
+    'Available for High-Impact Roles',
+    'Kathmandu, Nepal',
+    'wagleom@gmail.com',
+    'assets/resume.pdf',
+    2,
+    1000
+) ON DUPLICATE KEY UPDATE 
+    `name`=VALUES(`name`),
+    `tagline`=VALUES(`tagline`),
+    `hero_title`=VALUES(`hero_title`),
+    `bio`=VALUES(`bio`),
+    `about_text`=VALUES(`about_text`),
+    `status_text`=VALUES(`status_text`),
+    `location`=VALUES(`location`),
+    `email`=VALUES(`email`),
+    `resume_url`=VALUES(`resume_url`),
+    `years_exp`=VALUES(`years_exp`),
+    `articles_written`=VALUES(`articles_written`);
+
+-- 2. Insert Default Projects
+INSERT INTO `projects` (`id`, `title`, `description`, `tech_stack`, `project_url`, `image_path`) VALUES
+(1, 'Corporate Website', 'Modern, high-performance corporate web solution built with optimized layout and mobile responsiveness.', 'React.js, Vite, HTML5, CSS3, JavaScript, Responsive', 'https://coroporate-website.vercel.app/', 'assets/finance.jpg'),
+(2, 'E-commerce Platform', 'Full-featured online storefront application featuring product browsing, shopping cart, and intuitive UI.', 'React.js, Bootstrap, JavaScript, CSS3, State Management', 'https://github.com/Balanandawagle/E-commerce-project', 'assets/ecommerce.jpg'),
+(3, 'Travel & Tours Website', 'Dynamic, SEO-optimized tourism and tour booking platform with responsive destination showcases.', 'Next.js, Bootstrap, React.js, SSR, SEO Optimization', 'https://travel-tours-website-rose.vercel.app/', 'assets/travel.jpg'),
+(4, 'CelebWikiCorner — 600+ SEO Articles & Multi-Channel Network', 'Authored 600+ search-intent celebrity biography articles, scaling high search impressions and social channels.', 'SEO Strategy, Technical Writing, Keyword Silos, Indexation', 'https://celebwikicorner.com/', 'assets/celebwikicorner.jpg'),
+(5, 'Aayat Nepal — Social Media Brand Promotion & Logistics', 'Engineered visual marketing collateral, video campaigns, and social media brand presence.', 'Social Media Marketing, Brand Strategy, Canva Pro, Meta Ads', 'https://www.instagram.com/aayatnepal/', 'assets/aayat.jpg')
+ON DUPLICATE KEY UPDATE `id`=`id`;
+
+-- 3. Insert Default Experience Entries[cite: 5]
+INSERT INTO `experience` (`id`, `role_title`, `company`, `employment_type`, `timeline`, `location`, `skills_used`) VALUES
+(1, 'Advanced AI Data Trainer', 'Invisible Technologies', 'Freelance', 'Jun 2024 - Present', 'United States · Remote', 'Technical Writing, Content Evaluation & Analysis, AI Training & QA, Prompt Engineering'),
+(2, 'Junior Digital Content Creator & Social Media Handling', 'Neputer Tech', 'Full-time', 'Dec 2025 - Present', 'Kathmandu, Bagmati, Nepal · On-site', 'SEO, Google Search Console, Content Strategy, Social Media Management'),
+(3, 'Tech Content Writer', 'Routine of Nepal Banda', 'Internship', 'Aug 2025 - Feb 2026', 'Nepal · Remote', 'Tech Content Writing, Canva, Social Media Management, Trending Viral News')
+ON DUPLICATE KEY UPDATE `id`=`id`;
+
+-- 4. Insert Default Education Entries[cite: 2]
+INSERT INTO `education` (`id`, `degree`, `institution`, `gpa`, `timeline`, `skills_covered`) VALUES
+(1, 'Bachelor of Information Management (BIM)', 'Tribhuvan University', '3.72 / 4.0', '2021 – 2026', 'User Experience Design (UED), CSS, Web Development, Information Systems, Database Management'),
+(2, '+2 High School (Science & Tech)', 'Milestone International College', '3.49 / 4.0', '2019 – 2021', 'Computer Science, Mathematics, Digital Communication')
+ON DUPLICATE KEY UPDATE `id`=`id`;
+
+-- 5. Insert Default Certifications[cite: 1]
+INSERT INTO `certificates` (`id`, `title`, `issuer`, `issue_date`, `credential_url`, `skills_covered`) VALUES
+(1, 'MERN Stack Development', 'Evolve IT Hub', 'Issued Dec 2024 · Expired Mar 2025', 'https://drive.google.com/file/d/1HsZTx2pWpYdjyjmT9QJQtWW_0tz1grFE/view', 'React.js, Node.js, Express.js, MongoDB'),
+(2, 'Beginner SEO with Semrush', 'Semrush', 'Issued May 2025 · Expired May 2025', 'https://static.semrush.com/academy/certificates/caea43d727/balananda-wagle_25.pdf', 'SEO, Keyword Research, On-Page SEO'),
+(3, 'UI/UX Design', 'Nagarjuna ICT Club', 'Issued Feb 2023 · Expired Apr 2023', '#contact', 'UI/UX Design, User Experience (UED), Wireframing'),
+(4, 'Web Design Specialist', 'Broadway Infosys', 'Issued Nov 2024 · Expired Feb 2025', 'https://drive.google.com/file/d/196sIIv3bVIYyYOOqCJJWxghkxpnQxuIh/view', 'Front-End Dev, Web Design, HTML/CSS')
+ON DUPLICATE KEY UPDATE `id`=`id`;
